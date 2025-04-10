@@ -2,24 +2,516 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>ยินดีต้อนรับ!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MrMaxNaJa</title>
   <style>
+    :root {
+      --bg-light: #f0f8ff;
+      --text-light: #333;
+      --card-light: #fff;
+
+      --bg-dark: #1e1e1e;
+      --text-dark: #f0f0f0;
+      --card-dark: #2e2e2e;
+
+      --accent: #141414;
+      --accent-hover: #820086;
+      --accent-h1-text: #333333;
+      --accent-h1-text-dark: #ffffff;
+      --accent-V-1: #dbdbdb;
+      --accent-V-2: #272727;
+    }
+    
     body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000; /* สีพื้นหลังดำแบบอวกาศ */
+      overflow: hidden;
+      position: relative;
       font-family: sans-serif;
+    }
+
+    canvas {
+      position: fixed; /* เปลี่ยนจาก absolute เป็น fixed */
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1; /* ให้ต่ำกว่า content ที่ใช้ z-index: 0 หรือมากกว่า */
+    }
+    
+    .content {
+      position: relative;
+      z-index: 1;
+      color: white;
       text-align: center;
-      padding: 50px;
-      background-color: #f2f2f2;
+      padding-top: 50px;
     }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 50px 20px;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    /*.profile-card {
+      background-color: var(--card-light);
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+      */
+    .profile-card {
+      display: flex;
+      justify-content: space-between; /* หรือ space-around */
+      align-items: center;
+      background-color: var(--card-light);
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      transition: background-color 0.3s ease;
+    }
+    .profile-card-0 {
+      background-color: var(--card-light);
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 180px;
+      margin: right;
+      padding: 30px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+    .profile-card-1 {
+      background-color: var(--card-light);
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 280px;
+      /*margin-top: -20px;
+      margin: auto;*/
+      
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      
+    }
+
+    .profile-card-2 {
+      background-color: var(--card-light);
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+      /*height: 0vh; /* ความสูงเต็มจอ */
+      /*display: flex;
+      flex-direction: column;
+      justify-content: center; /* จัดให้อยู่กลางแนวตั้ง */
+      /*align-items: flex-start;     /* จัดให้อยู่กลางแนวนอน */
+      /*padding: 30px;*/
+      text-align: flex-start;
+      transition: background-color 0.3s ease;
+      
+    }
+
+
+    .dark-mode .profile-card {
+      background-color: var(--card-dark);
+    }
+    .dark-mode .profile-card-0 {
+      background-color: var(--accent-V-2);
+    }
+    .dark-mode .profile-card-1 {
+      background-color: var(--accent-V-2);
+    }
+    .dark-mode .profile-card-2 {
+      background-color: var(--accent-V-2);
+    }
+
+    .main-layout {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      max-width: 1100px;
+      margin: auto;
+      flex-wrap: wrap;
+    }
+
+    .profile-card {
+      flex: 1 1 600px;
+    }
+
+    .profile-card-0 {
+      flex: 1 1 300px;
+    }
+
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 10%;
+      object-fit: cover;
+      
+      border: 1px solid var(--accent-h1-text);
+      animation: fadeIn 2s ease;
+      
+    }
+
     h1 {
-      color: #3366cc;
+      color: var(--accent-h1-text);
+      margin: 0px;
+      animation: fadeIn 1s ease;
     }
+    h2 {
+      color: var(--accent-h1-text);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin: auto;
+      flex-wrap: wrap;
+    }
+
+    .dark-mode h1 {
+      color: var(--accent-h1-text-dark);
+    }
+    .dark-mode h2 {
+      color: var(--accent-h1-text-dark);
+    }
+
+    .dark-mode img {
+      border: 4px solid var(--accent-h1-text-dark);
+    }
+
     p {
       font-size: 18px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .buttons a,
+    .buttons button {
+      display: flex;
+      margin: 10px 10px;
+      padding: 10px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--accent);
+      color: white;
+      cursor: pointer;
+      
+      transition: background-color 0.3s ease;
+    }
+
+    .buttons a:hover,
+    .buttons button:hover {
+      background-color: var(--accent-hover);
+    }
+
+
+    .to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--accent);
+      color: #048500;
+      border: none;
+      padding: 12px 16px;
+      font-size: 14px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .to-top.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      .profile-card {
+        padding: 20px;
+        
+      }
+      /*.profile-card-2 {
+        padding: 20px;
+        
+      }*/
+      
+      .profile-card-0 {
+        max-width: 200px;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 50px 20px;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .main-layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      max-width: 1100px;
+      margin: auto;
+      flex-wrap: wrap;
+    }
+
+    .status-card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--card-light);
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      flex: 1 1 600px;
+      max-width: 900px;
+      padding: 30px;
+      transition: background-color 0.3s ease;
+    }
+
+    .dark-mode .status-card {
+      background-color: var(--card-dark);
+    }
+
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    /* Progress Bar Style (Horizontal) */
+    .progress-bar {
+      width: 200px;
+      height: 30px;
+      background-color: var(--accent-V-1);/*#ddd;*/
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .dark-mode .progress-bar {
+      background-color: var(--accent-V-2);
+    }
+
+    .progress {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .progress.energy {
+      background-color: #fdd835;
+    }
+
+    .progress.hp {
+      background-color: #e53935;
+    }
+
+    .progress.skill {
+      background-color: #43a047;
+    }
+
+    .status-text {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .percentage {
+      font-size: 12px;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text-light);
+    }
+    
+    .dark-mode .percentage {
+      color: var(--text-dark);
     }
   </style>
 </head>
-<body>
-  <h1>สวัสดีจาก GitHub Pages 👋</h1>
-  <p>นี่คือเว็บไซต์ที่โฮสต์ด้วย GitHub Pages!</p>
+
+<body class="dark-mode">
+  <canvas id="bgCanvas"></canvas>
+  <!-- <div class="profile-card"> -->
+    
+    <script>
+      const canvas = document.getElementById('bgCanvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let stars = [];
+  
+      function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+  
+      function createStar() {
+        const size = Math.random() * 2;
+        const speed = 0.3 + Math.random() * 0.7;
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        stars.push({ x, y, size, speed });
+      }
+  
+      function drawStars() {
+        ctx.clearRect(0, 0, width, height);
+  
+        for (let i = 0; i < stars.length; i++) {
+          const star = stars[i];
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          ctx.fillStyle = 'white';
+          ctx.fill();
+  
+          star.x += star.speed;
+  
+          if (star.x > width) {
+            star.x = 0;
+            star.y = Math.random() * height;
+          }
+        }
+      }
+  
+      function animate() {
+        if (stars.length < 500) {
+          createStar();
+        }
+        drawStars();
+        requestAnimationFrame(animate);
+      }
+  
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      animate();
+    </script>
+  <!--<div>-->
+  <div class="main-layout">
+    <div class="profile-card">
+      
+    <div>
+  <div>
+  <div class="main-layout">
+    <div class="profile-card">
+      <h2>Welcome to MrMaxNaJa's website.</h2>
+    </div>
+    <div class="profile-card">
+      <div class="status-item">
+        <div class="buttons">
+          <h1>เลือกหน้าต่าง</h1>
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <button onclick="toggleTheme()">🌓 Theme</button>
+        </div>
+      </div>
+
+      <div class="profile-card-0">
+        <img src="https://cdn.discordapp.com/attachments/1355094635290296341/1359575279298679075/IMG_20250302_065710_710.webp?ex=67f7faa6&is=67f6a926&hm=5a3023302f3d9a4aad0c092a1db75e8f0c71b1a7512489fc7d8d3a7492f883a5&" alt="รูปโปรไฟล์">
+        <h1>Narongrit Songkaew</h1>
+      </div>
+      
+      <div class="status-item">
+        <div class="buttons">
+          <h1>ช่องทางติดต่อ</h1>
+          <a href="https://www.facebook.com/MrMaxHub" target="_blank">📘 Facebook</a>
+          <a href="https://www.instagram.com/NayMaxNaJa" target="_blank">📸 Instagram</a>
+          <a href="https://discord.gg/kYD6fh59WF" target="_blank">🌐 Discord</a>
+          
+          <!--<a href="about.html" target="_blank">📄 ดูโปรไฟล์เพิ่มเติม</a>-->
+        </div>  
+      </div>
+    </div>
+    <div class="main-layout">
+      <div class="status-card">
+        <div class="status-item">
+          <!-- Progress Bar for Energy (Horizontal) -->
+          <div class="progress-bar">
+            <div class="progress energy" style="width: 75%;"></div>
+          </div>
+          <div class="status-text">
+            <div class="percentage">Energy ⚡ 75%</div>
+            
+          </div>
+        </div>
+        <div class="status-item">
+          <!-- Progress Bar for HP (Horizontal) -->
+          <div class="progress-bar">
+            <div class="progress hp" style="width: 90%;"></div>
+          </div>
+          <div class="status-text">
+            <div class="percentage">HP ❤️ 90%</div>
+            
+          </div>
+        </div>
+        <div class="status-item">
+          <!-- Progress Bar for Skill (Horizontal) -->
+          <div class="progress-bar">
+            <div class="progress skill" style="width: 60%;"></div>
+          </div>
+          <div class="status-text">
+            <div class="percentage">Skill 🎯 60%</div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <button id="toTopBtn" class="to-top" onclick="scrollToTop()">⬆</button>
+  
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+    
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    const toTopBtn = document.getElementById("toTopBtn");
+
+    window.addEventListener("scroll", () => {
+      toTopBtn.classList.toggle("show", window.scrollY > 300);
+    });
+  </script>
+  
 </body>
 </html>
