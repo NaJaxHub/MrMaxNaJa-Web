@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Summit</title>
+<style>
+  body{
+    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    background:#000; /* พื้นหลังสีดำรอง */
+    color:#fff;
+  }
+
+  /* ทำให้ canvas อยู่ด้านหลัง */
+  canvas#starsCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  /* เมนูนำทาง */
+  nav{
+    background:rgba(51,51,51,0.8);
+    display:flex;
+    flex-wrap:wrap;
+    padding:10px;
+    /*justify-content:center;*/
+
+    justify-content: space-between; /* กระจายซ้าย-ขวา */
+    align-items: center;
+  }
+  nav a{
+    color:#fff;
+    text-decoration:none;
+    padding:10px 15px;
+    display:inline-block;
+  }
+  nav a:hover{
+    background:#555;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-top: auto;
+    margin-bottom: -0px;
+  }
+  
+  h2 {
+    font-size: 14px;
+    font-weight: normal;
+    margin-top: 0;
+  }
+
+  .node p {
+    font-size: 16px;
+    color:#000;
+  }
+
+  nav a {
+    font-size: 18px;
+    margin-right: 10px;
+    /*margin-left: auto; /* ผลัก block ไปทางขวา */
+  }
+
+  /* เนื้อหา */
+  .container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:20px;
+    position:relative;
+    z-index:1; /* ให้อยู่เหนือ canvas */
+    background: rgba(85, 85, 85, 0.85);
+    border-radius: 10px;
+      margin-top: 30px; /* ช่องว่างเฉพาะ container ถัดไป */
+  }
+  .circle-container {
+    width: 70px;
+    height: 40px;
+    border: 5px solid red; /* วงกลมสีแดง */
+    border-radius: 100% / 100%; /* ทำให้เป็นวงกลม */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red; /* ตัวอักษรสีแดง */
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    user-select: none;
+    /*margin: 40px auto;*/
+    margin-bottom: 10px; /* ปรับระยะห่างกับหัวข้อถัดไป */
+
+    
+  }
+  /* แผนผังองค์กร */
+  .level{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin:20px 0;
+    flex-wrap:wrap;
+  }
+  .level2 {
+    height: 60px;
+    /*order: 2;*/ 
+    /*margin-left: auto; /* ผลัก block ไปทางขวา */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* จัดแนวแกนขวางให้ตรงกลาง */
+    gap: 10px; /* เว้นระยะห่างระหว่าง HSLP กับหัวข้อ */
+    flex-direction: row; /* เรียงแนวนอน */
+    
+  }
+
+  .titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+  }
+  .titles2 {
+
+    display: flex;
+    justify-content: center;
+  }
+  .node{
+    background:#9e9e9e;
+    padding:10px;
+    border-radius:8px;
+    box-shadow:0 0 5px rgba(0, 0, 0, 0.1);
+    text-align:center;
+    width:150px;
+    height: 200px; /*200px; /* ความสูงกำหนดตายตัว */
+  }
+  .node2{
+    background:#9e9e9e;
+    padding:10px;
+    border-radius:8px;
+    box-shadow:0 0 5px rgba(0, 0, 0, 0.1);
+    text-align:center;
+    width:150px;
+    height: auto; /*200px; /* ความสูงกำหนดตายตัว */
+  }
+  .node img {
+    width: auto; /*100%;*/
+    height: 120px; /* ความสูงกำหนดตายตัว */
+    border-radius: 10px;
+      box-shadow:0 0 5px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+  }
+  .node p{
+    font-size: 14px;
+    margin-top:8px;
+    font-weight:bold;
+  }
+
+  .node2 img {
+    width: auto; /*100%;*/
+    height: 120px; /* ความสูงกำหนดตายตัว */
+    border-radius: 10px;
+      box-shadow:0 0 5px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+  }
+  .node2 p{
+    font-size: 14px;/*14px*/
+    margin-top:8px;
+    font-weight:bold;
+  }
+  /* Responsive: มือถือแนวตั้ง */
+  @media (max-width:700px){
+    nav{
+      flex-direction:column;
+      align-items:center;
+    }
+    nav a{
+      width:100%;
+      text-align:center;
+      border-bottom:1px solid #444;
+    }
+    .level{
+      flex-direction:column;
+      align-items:center;
+    }
+    .node{
+      width:90%;
+      max-width:300px;
+    }
+  }
+  
+</style>
+</head>
+<body>
+
+<canvas id="starsCanvas"></canvas>
+
+<nav>
+  <div class="level2">
+    <div class="circle-container">HSLP</div>
+    <div class="titles">
+      <h1>ห้างหุ้นส่วนจำกัด แฮปปี้ ซัมมิท</h1>
+      <h2>2 ถนนพระราม 2 ซ.69 แขวงแสมดำ เขตบางขุนเทียน กรุงเทพมหานคร</h2>
+    </div>
+  </div>
+  <div class="titles2"> 
+    <a href="happyhome.html">Home</a>
+    <a href="page2.html">หน้า 2</a>
+    <a href="page3.html">หน้า 3</a>
+    <a href="page4.html">หน้า 4</a>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- ระดับ 1 -->
+  <div class="level">
+    <div class="node">
+      <img src="ceo2.jpg" alt="CEO">
+      <p>กรรมการ ผู้จัดการ</p>
+      <p>นาย สุเทพ  สงค์แก้ว</p>
+    </div>
+  </div>
+  <!-- ระดับ 2 -->
+  <div class="level">
+    <div class="node">
+      <img src="ceo2.jpg" alt="CEO">
+      <p>ที่ปรึกษากิตติมศักดิ์</p>
+      <p>พณฯ ท่าน พลเอก อานนท์ ตันติศิริ</p>
+    </div>
+  </div>
+
+  <!-- ระดับ 3 -->
+  <div class="level">
+    <div class="node">
+      <img src="ceo2.jpg" alt="Manager 1">
+      <p>ผู้จัดการฝ่ายนำเข้า/ส่งออก</p>
+      <p>นาย บำรุง  พูลเพิ่ม</p>
+    </div>
+    <div class="node">
+      <img src="ceo2.jpg" alt="Manager 2">
+      <p>ผู้จัดการฝ่ายต่างประเทศ</p>
+      <p>นาย อากีบา  ซิมเบมบา</p>
+    </div>
+    <div class="node">
+      <img src="ceo2.jpg" alt="Manager 3">
+      <p>ผู้จัดการฝ่ายประสานงาน</p>
+      <p>นาย อนุภาพ  วงศ์จอม</p>
+    </div>
+    <div class="node2" height="auto" >
+      <img src="ceo2.jpg" alt="Manager 3">
+      <p>ผู้จัดการฝ่ายการเงิน / บัญชี</p>
+      <p>นางสาว กนกวรรณ  เจริญศิลป์</p>
+
+      <img src="ceo2.jpg" alt="Manager 3" >
+      <p>ผู้จัดการฝ่ายการเงิน / บัญชี</p>
+      <p>นาย ประยูร  เที่ยงยุติธรรม</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('starsCanvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let mouse = { x: null, y: null };
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Star {
+    constructor(x, y, radius) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      this.draw();
+    }
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 100; i++) {
+      let radius = Math.random() * 2;
+      let x = Math.random() * canvas.width;
+      let y = Math.random() * canvas.height;
+      stars.push(new Star(x, y, radius));
+    }
+  }
+
+  function connectStars() {
+    for (let a = 0; a < stars.length; a++) {
+      for (let b = a + 1; b < stars.length; b++) {
+        let dx = stars[a].x - stars[b].x;
+        let dy = stars[a].y - stars[b].y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          if (mouse.x && mouse.y) {
+            let dxm = stars[a].x - mouse.x;
+            let dym = stars[a].y - mouse.y;
+            let distMouse = Math.sqrt(dxm * dxm + dym * dym);
+            if (distMouse < 150) {
+              ctx.beginPath();
+              ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(stars[a].x, stars[a].y);
+              ctx.lineTo(stars[b].x, stars[b].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => star.update());
+    connectStars();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('mousemove', function(e) {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+
+  window.addEventListener('mouseout', function() {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  initStars();
+  animate();
+</script>
+
+</body>
+</html>
