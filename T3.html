@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สรุปรายการปลาสวาย</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f5f6f7;
+      margin: 0;
+      padding: 20px;
+    }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      width: 180px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .chart-container {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .chart-text {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      font-weight:bold;
+      font-size:16px;
+      color:#333;
+    }
+    .info {
+      text-align: center;
+    }
+    .info h3 {
+      margin: 0 0 5px;
+      font-size: 14px;
+    }
+    .info p {
+      margin: 2px 0;
+      color: #555;
+      font-size: 13px;
+    }
+    .total {
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card-container">
+
+  <!-- ลำดับที่ 1 -->
+  <div class="card">
+    <div class="chart-container">
+      <canvas id="chart1"></canvas>
+      <div class="chart-text">150</div>
+    </div>
+    <div class="info">
+      <h3>ลำดับ 1 - ปลาสวาย</h3>
+      <p>ประเภท: ผสม เล็ก/กลาง</p>
+      <p>ราคา: 150 บ./กก.</p>
+      <p>น้ำหนัก: 100 กก.</p>
+      <p>รวม: 15000 บ.</p>
+    </div>
+  </div>
+
+  <!-- ลำดับที่ 2 -->
+  <div class="card">
+    <div class="chart-container">
+      <canvas id="chart2"></canvas>
+      <div class="chart-text">168</div>
+    </div>
+    <div class="info">
+      <h3>ลำดับ 2 - ปลาสวาย</h3>
+      <p>ประเภท: เล็ก</p>
+      <p>ราคา: 168 บ./กก.</p>
+      <p>น้ำหนัก: 500 กก.</p>
+      <p>รวม: 84000 บ.</p>
+    </div>
+  </div>
+
+  <!-- ลำดับที่ 3 -->
+  <div class="card">
+    <div class="chart-container">
+      <canvas id="chart3"></canvas>
+      <div class="chart-text">140</div>
+    </div>
+    <div class="info">
+      <h3>ลำดับ 3 - ปลาสวาย</h3>
+      <p>ประเภท: กลาง</p>
+      <p>ราคา: 140 บ./กก.</p>
+      <p>น้ำหนัก: 200 กก.</p>
+      <p>รวม: 28000 บ.</p>
+    </div>
+  </div>
+
+  <!-- ลำดับที่ 4 -->
+  <div class="card">
+    <div class="chart-container">
+      <canvas id="chart4"></canvas>
+      <div class="chart-text">155</div>
+    </div>
+    <div class="info">
+      <h3>ลำดับ 4 - ปลาสวาย</h3>
+      <p>ประเภท: ใหญ่</p>
+      <p>ราคา: 155 บ./กก.</p>
+      <p>น้ำหนัก: 300 กก.</p>
+      <p>รวม: 46500 บ.</p>
+    </div>
+  </div>
+
+  <!-- ลำดับที่ 5 -->
+  <div class="card">
+    <div class="chart-container">
+      <canvas id="chart5"></canvas>
+      <div class="chart-text">160</div>
+    </div>
+    <div class="info">
+      <h3>ลำดับ 5 - ปลาสวาย</h3>
+      <p>ประเภท: คัดพิเศษ</p>
+      <p>ราคา: 160 บ./กก.</p>
+      <p>น้ำหนัก: 400 กก.</p>
+      <p>รวม: 64000 บ.</p>
+    </div>
+  </div>
+
+  <!-- รวม -->
+  <div class="card">
+    <div class="chart-container">
+      <canvas id="chartTotal"></canvas>
+      <div class="chart-text">รวม</div>
+    </div>
+    <div class="info total">
+      <h3>รวมทั้งหมด</h3>
+      <p>น้ำหนักรวม: 1500 กก.</p>
+      <p>ราคารวม: 237500 บ.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function createCircularChart(id, percent, color) {
+  new Chart(document.getElementById(id), {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [percent, 100 - percent],
+        backgroundColor: [color, '#e5e5e5'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '75%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
+      }
+    }
+  });
+}
+
+// สร้างกราฟแต่ละอัน
+createCircularChart('chart1', 60, '#ff7f0e');
+createCircularChart('chart2', 70, '#1f77b4');
+createCircularChart('chart3', 50, '#2ca02c');
+createCircularChart('chart4', 65, '#d62728');
+createCircularChart('chart5', 75, '#9467bd');
+createCircularChart('chartTotal', 100, '#333');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Summit</title>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #fff;
+    line-height: 1.6;
+  }
+
+  /* Canvas background */
+  canvas#starsCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  /* Navigation Bar */
+  nav {
+    background: rgba(20, 20, 20, 0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 14px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+
+  nav a:hover {
+    background: #ff4d4d;
+  }
+
+  /* Logo area */
+  .level2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .circle-container {
+    width: 70px;
+    height: 40px;
+    border: 3px solid #ff4d4d;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 18px;
+    user-select: none;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    color: #bbb;
+  }
+
+  /* Container content */
+  .container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(50, 50, 50, 0.85);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+
+  /* Staff Card */
+  .level {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .node, .node2 {
+    background: #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    width: 150px;
+    text-align: center;
+    box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+  }
+
+  .node:hover, .node2:hover {
+    transform: translateY(-5px);
+  }
+
+  .node img, .node2 img {
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+  }
+
+  .node img:hover, .node2 img:hover {
+    transform: scale(1.05);
+  }
+
+  .node p, .node2 p {
+    font-size: 14px;
+    font-weight: bold;
+    color: #222;
+    margin: 6px 0 0;
+  }
+
+  /* Contact Info */
+  .contact-info p {
+    margin: 8px 0;
+  }
+  .contact-info a {
+    color: #00bfff;
+    text-decoration: none;
+  }
+  .contact-info a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    nav {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .level {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starsCanvas"></canvas>
+
+<nav>
+  <div class="level2">
+    <div class="circle-container">HSLP</div>
+    <div>
+      <h1>ห้างหุ้นส่วนจำกัด แฮปปี้ ซัมมิท</h1>
+      <h2>2 ถนนพระราม 2 ซ.69 แขวงแสมดำ เขตบางขุนเทียน กรุงเทพมหานคร</h2>
+    </div>
+  </div>
+  <div>
+    <a href="T1.html">Home</a>
+    <a href="T2.html" style="background:#ff4d4d;">หน้า 2</a>
+    <a href="T3.html">หน้า 3</a>
+    <a href="T4.html">ช่องทางติดต่อ</a>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- ระดับ 1 -->
+  <div class="level">
+    <div class="node">
+      <img src="ceo2.jpg" alt="CEO">
+      <p>กรรมการ ผู้จัดการ</p>
+      <p>นาย สุเทพ  สงค์แก้ว</p>
+    </div>
+  </div>
+
+  <!-- ระดับ 2 -->
+  <div class="level">
+    <div class="node">
+      <img src="ceo2.jpg" alt="Advisor">
+      <p>ที่ปรึกษากิตติมศักดิ์</p>
+      <p>พณฯ ท่าน พลเอก อานนท์ ตันติศิริ</p>
+    </div>
+  </div>
+
+  <!-- ระดับ 3 -->
+  <div class="level">
+    <div class="node">
+      <img src="ceo2.jpg" alt="Manager 1">
+      <p>ผู้จัดการฝ่ายนำเข้า/ส่งออก</p>
+      <p>นาย บำรุง  พูลเพิ่ม</p>
+    </div>
+    <div class="node">
+      <img src="ceo2.jpg" alt="Manager 2">
+      <p>ผู้จัดการฝ่ายต่างประเทศ</p>
+      <p>นาย อากีบา  ซิมเบมบา</p>
+    </div>
+    <div class="node">
+      <img src="ceo2.jpg" alt="Manager 3">
+      <p>ผู้จัดการฝ่ายประสานงาน</p>
+      <p>นาย อนุภาพ  วงศ์จอม</p>
+    </div>
+    <div class="node2">
+      <img src="ceo2.jpg" alt="Finance 1">
+      <p>ผู้จัดการฝ่ายการเงิน / บัญชี</p>
+      <p>นางสาว กนกวรรณ  เจริญศิลป์</p>
+      <img src="ceo2.jpg" alt="Finance 2" style="margin-top:10px;">
+      <p>ผู้จัดการฝ่ายการเงิน / บัญชี</p>
+      <p>นาย ประยูร  เที่ยงยุติธรรม</p>
+    </div>
+  </div>
+</div>
+
+<div class="container contact-info">
+  <h1>ช่องทางติดต่อ</h1>
+  <p><strong>ที่อยู่:</strong> 2 ถนนพระราม 2 ซ.69 แขวงแสมดำ เขตบางขุนเทียน กรุงเทพมหานคร</p>
+  <p><strong>โทรศัพท์:</strong> 02-123-4567</p>
+  <p><strong>อีเมล:</strong> <a href="mailto:contact@happysummit.co.th">contact@happysummit.co.th</a></p>
+  <p><strong>Facebook:</strong> <a href="https://www.facebook.com/happysummit" target="_blank">facebook.com/happysummit</a></p>
+  <p><strong>Line ID:</strong> @happysummit</p>
+  <p><strong>เว็บไซต์:</strong> <a href="https://www.happysummit.co.th" target="_blank">www.happysummit.co.th</a></p>
+</div>
+
+<script>
+  const canvas = document.getElementById('starsCanvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let mouse = { x: null, y: null };
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Star {
+    constructor(x, y, radius) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      this.draw();
+    }
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 100; i++) {
+      let radius = Math.random() * 2;
+      let x = Math.random() * canvas.width;
+      let y = Math.random() * canvas.height;
+      stars.push(new Star(x, y, radius));
+    }
+  }
+
+  function connectStars() {
+    for (let a = 0; a < stars.length; a++) {
+      for (let b = a + 1; b < stars.length; b++) {
+        let dx = stars[a].x - stars[b].x;
+        let dy = stars[a].y - stars[b].y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120 && mouse.x && mouse.y) {
+          let dxm = stars[a].x - mouse.x;
+          let dym = stars[a].y - mouse.y;
+          let distMouse = Math.sqrt(dxm * dxm + dym * dym);
+          if (distMouse < 150) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(stars[a].x, stars[a].y);
+            ctx.lineTo(stars[b].x, stars[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => star.update());
+    connectStars();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+  window.addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  initStars();
+  animate();
+</script>
+</body>
+</html>

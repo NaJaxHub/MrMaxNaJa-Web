@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard ทองคำ</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #fff;
+    line-height: 1.6;
+  }
+
+  /* Canvas background */
+  canvas#starsCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  /* Navigation Bar */
+  nav {
+    background: rgba(20, 20, 20, 0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 14px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+
+  nav a:hover {
+    background: #ff4d4d;
+  }
+
+  /* Logo area */
+  .level2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .circle-container {
+    width: 70px;
+    height: 40px;
+    border: 3px solid #ff4d4d;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 18px;
+    user-select: none;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    color: #bbb;
+  }
+
+  /* Container content */
+  .container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(50, 50, 50, 0.85);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+
+  /* Dashboard Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: #fff;
+    color: #000;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+
+  .gold-card {
+    background: linear-gradient(135deg, #ffd700, #ffcc00);
+    color: #000;
+    font-weight: bold;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px; /*14px*/
+  }
+  table td {
+    padding: 5px 0;
+  }
+
+
+  /* Responsive Card Row for ปลาสวาย */
+  .fish-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 10px;
+  }
+
+  .fish-card {
+    background: #fff;
+    color: #000;
+    border-radius: 12px;
+    padding: 15px;
+    flex: 0 0 auto;
+    width: 160px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+
+  .fish-card h4 {
+    margin: 8px 0 4px;
+    font-size: 16px;
+  }
+
+  .fish-card p {
+    margin: 2px 0;
+    font-size: 13px;
+  }
+
+  .fish-chart {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+
+  .fish-chart canvas {
+    width: 100px;
+    height: 100px;
+  }
+
+  .fish-chart div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav a {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .level2 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+</style>
+</head>
+<body>
+
+<canvas id="starsCanvas"></canvas>
+
+<nav>
+  <div class="level2">
+    <div class="circle-container">HSLP</div>
+    <div>
+      <h1>ห้างหุ้นส่วนจำกัด แฮปปี้ ซัมมิท</h1>
+      <h2>2 ถนนพระราม 2 ซ.69 แขวงแสมดำ เขตบางขุนเทียน กรุงเทพมหานคร</h2>
+    </div>
+  </div>
+  <div>
+    <a href="T1.html" style="background:#ff4d4d;">Home</a>
+    <a href="T2.html">หน้า 2</a>
+    <a href="T3.html">หน้า 3</a>
+    <a href="T4.html">ช่องทางติดต่อ</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Dashboard ทองคำ</h1>
+  <div class="grid">
+    <!-- การ์ดทองคำ -->
+    <div class="card gold-card">
+      <h3>แผงงานนำเข้า</h3>
+      <table>
+        <tr><td>ราคาขาย</td><td>49.75 USD</td></tr>
+        <tr><td>ราคาต้นทุน</td><td>30 USD</td></tr>
+        <tr><td>กำไร/1กรัม</td><td>19.75 USD</td></tr>
+        <tr><td></td><td></td></tr>
+        <tr><td>1 กิโลกรัม = 1000 กรัม = 19.75 USD</td><td></td></tr>
+        <tr><td></td><td>x1000กรัม</td></tr>
+        <tr><td>ทำกำไร = 1000กรัม = 19750 USD</td><td></td></tr>
+        <tr><td>นำเข้า10กิโลกรัม/เดือน = 19750 USD</td><td></td></tr>
+        <tr><td>x10กิโลกรัม/เดือน</td><td></td></tr>
+        <tr><td></td><td></td></tr>
+        <tr><td></td><td></td></tr>
+        <tr><td>รวม 197500 USD/เดือน</td><td></td></tr>
+        <tr><td>อัตราแลกเปลี่ยน x31.80 บาท/USD</td><td></td></tr>
+        <tr><td>ทำกำไร 6280500 บาท/เดือน</td><td></td></tr>
+        <tr><td style="font-size:10px">ข้อมูลอัพเดทเมื่อ  11/8/2568</td><td></td></tr>
+      </table>
+    </div>
+
+    <!-- ผู้ใช้งาน -->
+    <div class="card">
+      <h3>ลำดับ 1</h3>
+      <table>
+        <tr><td>สินค้า</td><td>แร่ทองคำ</td></tr>
+        <tr><td>น้ำหนัก</td><td>1 กรัม</td></tr>
+        <tr><td>ความบริสุทธิ์</td><td>90 %</td></tr>
+        <tr><td>ราคาซื้อ</td><td>30 USD</td></tr>
+        <tr><td>ราคาตลาด</td><td>49.75 USD</td></tr>
+      </table>
+      
+    </div>
+
+    <!-- กราฟกำไร -->
+    <div class="card">
+      
+    </div>
+
+
+  </div>
+</div>
+
+<div class="container">
+  <h1>Dashboard แผงงานส่งออก</h1>
+  <div class="fish-grid">
+
+    <!-- ทำแบบเดียวกันกับ chartFish3, 4, 5 และ chartFishTotal -->
+    <div class="fish-card" style="background: #00b7ff;">
+      <div class="fish-chart">
+        <canvas id="chartFishTotal"></canvas>
+        <div>รวม</div>
+      </div>
+      <h4>รวมทั้งหมด</h4>
+      <p>น้ำหนักรวม: 2,100 กก.</p>
+      <p>รวมราคา: 498,000 บ.</p>
+    </div>
+
+    <div class="fish-card" style="background: #00d600;">
+      <div class="fish-chart">
+        <canvas id="chartFishTotal2"></canvas>
+        <div>ต้นทุน</div>
+      </div>
+      <h4>ราคาต้นทุน</h4>
+      <p>น้ำหนักรวม: 2,100 กก.</p>
+      <p>รวมราคา: 415,000 บ.</p>
+    </div>
+
+    <div class="fish-card" style="background: #d6e600;">
+      <div class="fish-chart">
+        <canvas id="chartFishTotal3"></canvas>
+        <div>กำไร</div>
+      </div>
+      <h4>กำไร</h4>
+      <p>น้ำหนักรวม: 2,100 กก.</p>
+      <p>รวมราคา: 83,000 บ.</p>
+    </div>
+
+    <!-- ตัวอย่างการ์ด -->
+    <div class="fish-card">
+      <div class="fish-chart">
+        <canvas id="chartFish1"></canvas>
+        <div>150</div>
+      </div>
+      <h4>ปลาสวาย</h4>
+      <p>ประเภท: ผสม เล็ก/กลาง</p>
+      <p>ราคา: 150 บ./กก.</p>
+      <p>น้ำหนัก: 100 กก.</p>
+      <p>รวมราคา: 15,000 บ.</p>
+    </div>
+
+    <div class="fish-card">
+      <div class="fish-chart">
+        <canvas id="chartFish2"></canvas>
+        <div>168</div>
+      </div>
+      <h4>ปลาสวาย</h4>
+      <p>ประเภท: เล็ก</p>
+      <p>ราคา: 168 บ./กก.</p>
+      <p>น้ำหนัก: 500 กก.</p>
+      <p>รวมราคา: 84,000 บ.</p>
+    </div>
+
+    <div class="fish-card">
+      <div class="fish-chart">
+        <canvas id="chartFish3"></canvas>
+        <div>150</div>
+      </div>
+      <h4>ปลาสวาย</h4>
+      <p>ประเภท: ใหญ่</p>
+      <p>ราคา: 150 บ./กก.</p>
+      <p>น้ำหนัก: 500 กก.</p>
+      <p>รวมราคา: 75,000 บ.</p>
+    </div>
+    
+    <div class="fish-card">
+      <div class="fish-chart">
+        <canvas id="chartFish4"></canvas>
+        <div>168</div>
+      </div>
+      <h4>ปลาสวาย</h4>
+      <p>ประเภท: ท่อน</p>
+      <p>ราคา: 168 บ./กก.</p>
+      <p>น้ำหนัก: 500 กก.</p>
+      <p>รวมราคา: 84,000 บ.</p>
+    </div>
+
+    <div class="fish-card">
+      <div class="fish-chart">
+        <canvas id="chartFish5"></canvas>
+        <div>480</div>
+      </div>
+      <h4>ปลาสวาย</h4>
+      <p>ประเภท: ใหญ่</p>
+      <p>ราคา: 480 บ./กก.</p>
+      <p>น้ำหนัก: 500 กก.</p>
+      <p>รวมราคา: 240,000 บ.</p>
+    </div>
+
+  </div>
+  <tr><td>* หมายเหตุ  </td><td>เฉลี่ยกำไร 1 kg = 39.50</td></tr>
+  <tr><td> : </td><td>กำไร 1 ตู้ = 20,000 kg x39.50 = 790,000 บาท</td></tr>
+</div>
+<div class="container">
+  <h1>Dashboard ตารางสินค้าต้นทุน</h1>
+  <table style="width:100%; border-collapse:collapse; background:#fff; color:#000; border-radius:8px; overflow:hidden; font-size:14px;">
+    <thead style="background:#ff4d4d; color:#fff;">
+      <tr>
+        <th style="padding:8px; text-align:center;">ลำดับ</th>
+        <th style="padding:8px; text-align:center;">สินค้า</th>
+        <th style="padding:8px; text-align:left;">ประเภท</th>
+        <th style="padding:8px; text-align:right;">ราคา/กิโลกรัม</th>
+        <th style="padding:8px; text-align:right;">แพ็คละ/น้ำหนัก</th>
+        <th style="padding:8px; text-align:right;">ราคารวม</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:8px; text-align:center;">1</td>
+        <td style="padding:8px; text-align:center;">ปลาสวาย</td>
+        <td style="padding:8px; text-align:left;">ผสม เล็ก/ใหญ่</td>
+        <td style="padding:8px; text-align:right;">125</td>
+        <td style="padding:8px; text-align:right;">100</td>
+        <td style="padding:8px; text-align:right;">12,500</td>
+      </tr>
+      <tr>
+        <td style="padding:8px; text-align:center;">2</td>
+        <td style="padding:8px; text-align:center;">ปลาสวาย</td>
+        <td style="padding:8px; text-align:left;">เล็ก</td>
+        <td style="padding:8px; text-align:right;">140</td>
+        <td style="padding:8px; text-align:right;">500</td>
+        <td style="padding:8px; text-align:right;">70,000</td>
+      </tr>
+      <tr>
+        <td style="padding:8px; text-align:center;">3</td>
+        <td style="padding:8px; text-align:center;">ปลาสวาย</td>
+        <td style="padding:8px; text-align:left;">ใหญ่</td>
+        <td style="padding:8px; text-align:right;">125</td>
+        <td style="padding:8px; text-align:right;">500</td>
+        <td style="padding:8px; text-align:right;">62,500</td>
+      </tr>
+      <tr>
+        <td style="padding:8px; text-align:center;">4</td>
+        <td style="padding:8px; text-align:center;">ปลาสวาย</td>
+        <td style="padding:8px; text-align:left;">ท่อน</td>
+        <td style="padding:8px; text-align:right;">140</td>
+        <td style="padding:8px; text-align:right;">500</td>
+        <td style="padding:8px; text-align:right;">70,000</td>
+      </tr>
+      <tr>
+        <td style="padding:8px; text-align:center;">5</td>
+        <td style="padding:8px; text-align:center;">ปลาสวาย</td>
+        <td style="padding:8px; text-align:left;">เส้น</td>
+        <td style="padding:8px; text-align:right;">400</td>
+        <td style="padding:8px; text-align:right;">500</td>
+        <td style="padding:8px; text-align:right;">200,000</td>
+      </tr>
+    </tbody>
+    <tfoot style="background:#f5f5f5; font-weight:bold;">
+      <tr>
+        <td colspan="4" style="padding:8px; text-align:center;">ต้นทุน รวม</td>
+        <td style="padding:8px; text-align:right;">2,100</td>
+        <td style="padding:8px; text-align:right;">415,000</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+
+
+<script>
+  
+function createCircularChart(id, percent, color) {
+  new Chart(document.getElementById(id), {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [percent, 100 - percent],
+        backgroundColor: [color, '#e5e5e5'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '75%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
+      }
+    }
+  });
+}
+
+createCircularChart('chartFish1', 60, '#ff7f0e');
+createCircularChart('chartFish2', 70, '#1f77b4');
+createCircularChart('chartFish3', 50, '#2ca02c');
+createCircularChart('chartFish4', 65, '#d62728');
+createCircularChart('chartFish5', 75, '#9467bd');
+createCircularChart('chartFishTotal', 100, '#333');
+createCircularChart('chartFishTotal2', 100, '#333');
+createCircularChart('chartFishTotal3', 100, '#333');
+
+
+/* พื้นหลังดาว */
+const canvas = document.getElementById('starsCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let mouse = { x: null, y: null };
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Star {
+  constructor(x, y, radius) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    this.draw();
+  }
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 100; i++) {
+    let radius = Math.random() * 2;
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height;
+    stars.push(new Star(x, y, radius));
+  }
+}
+
+function connectStars() {
+  for (let a = 0; a < stars.length; a++) {
+    for (let b = a + 1; b < stars.length; b++) {
+      let dx = stars[a].x - stars[b].x;
+      let dy = stars[a].y - stars[b].y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120 && mouse.x && mouse.y) {
+        let dxm = stars[a].x - mouse.x;
+        let dym = stars[a].y - mouse.y;
+        let distMouse = Math.sqrt(dxm * dxm + dym * dym);
+        if (distMouse < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(stars[a].x, stars[a].y);
+          ctx.lineTo(stars[b].x, stars[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(star => star.update());
+  connectStars();
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('mousemove', e => {
+  mouse.x = e.x;
+  mouse.y = e.y;
+});
+window.addEventListener('mouseout', () => {
+  mouse.x = null;
+  mouse.y = null;
+});
+
+initStars();
+animate();
+
+</script>
+
+</body>
+</html>
